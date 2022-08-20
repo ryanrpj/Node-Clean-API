@@ -1,5 +1,5 @@
 export default {
-  roots: '<rootDir>/src',
+  roots: ['<rootDir>/src'],
   coverageProvider: 'v8',
   testEnvironment: 'node',
   transform: {
