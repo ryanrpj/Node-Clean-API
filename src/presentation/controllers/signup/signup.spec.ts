@@ -137,7 +137,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        email: 'invalid_email@mail.com',
+        email: 'any_email@mail.com',
         password: 'any_password'
       }
     }
@@ -154,7 +154,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        email: 'invalid_email@mail.com',
+        email: 'any_email@mail.com',
         password: 'any_password'
       }
     }
