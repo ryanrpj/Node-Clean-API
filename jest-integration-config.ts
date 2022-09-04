@@ -1,5 +1,5 @@
 import jestConfig from './jest.config'
 
-jestConfig.testMatch = ['src/**/*.test.ts']
+jestConfig.testMatch = ['**/*.test.ts']
 
 export default jestConfig
