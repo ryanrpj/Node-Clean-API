@@ -16,7 +16,7 @@ class EmailValidatorStub implements EmailValidator {
 }
 
 class AddAccountStub implements AddAccount {
-  add (account: AddAccountModel): AccountModel {
+  async add (account: AddAccountModel): Promise<AccountModel> {
     return {
       id: 'valid_id',
       name: 'valid_name',
@@ -149,9 +149,7 @@ describe('SignUp Controller', () => {
 
   test('Should return 500 if AddAccount throws', async () => {
     const { sut, addAccount } = makeSut()
-    jest.spyOn(addAccount, 'add').mockImplementationOnce((_) => {
-      throw new Error()
-    })
+    jest.spyOn(addAccount, 'add').mockImplementationOnce(async (_) => await Promise.reject(new Error()))
 
     const httpRequest = {
       body: {
