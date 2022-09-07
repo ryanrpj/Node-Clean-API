@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace",
-    "test:unit": "yarn test --watch -c jest-unit-config.ts",
+    "test:unit": "yarn test --watch --silent=false -c jest-unit-config.ts",
     "test:integration": "yarn test --watch -c jest-integration-config.js",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage"
