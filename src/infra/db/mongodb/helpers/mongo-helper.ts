@@ -17,6 +17,6 @@ export const MongoHelper = {
 
   map<T> (document: any): T {
     const { _id, ...otherProperties } = document
-    return Object.assign({}, otherProperties, { id: _id })
+    return Object.assign({ id: _id }, otherProperties)
   }
 }
