@@ -36,12 +36,14 @@ After that, just install the project dependencies with `yarn` or `npm`, then run
 `yarn run start` or `npm run start`. The server will be available at http://localhost:8080.
 To change the default server port, either provide the _PORT_ environment variable, or
 change the `src/main/config/env.ts` file.
+
 ---
 
 ## 🧪 Running tests
 This project features 100% test coverage. To run unit tests, execute the `test:unit` script
 with _yarn_ or _npm_. To run integration tests, execute the `test:integration` script. If you want
 to run all tests at once, just run the `test` script.
+
 ---
 
 ## 📃 Endpoints
