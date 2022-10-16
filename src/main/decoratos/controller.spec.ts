@@ -38,4 +38,15 @@ describe('Log Controller Decorator', () => {
 
     expect(handleSpy).toHaveBeenCalledWith(httpRequest)
   })
+
+  test('Should return whatever controller returns', async () => {
+    const { sut } = makeSut()
+
+    const anyRequest = {}
+
+    const response = await sut.handle(anyRequest)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toMatchObject({ ok: 'ok' })
+  })
 })
