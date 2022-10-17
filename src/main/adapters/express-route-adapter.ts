@@ -9,6 +9,12 @@ export const adaptExpressRoute = (controller: Controller) => {
 
     const response = await controller.handle(request)
 
-    res.status(response.statusCode).send(response.body)
+    if (response.statusCode.toString().match(/2\d{2}/)) {
+      res.status(response.statusCode).send(response.body)
+    } else {
+      res.status(response.statusCode).send({
+        error: response.body.message
+      })
+    }
   }
 }
