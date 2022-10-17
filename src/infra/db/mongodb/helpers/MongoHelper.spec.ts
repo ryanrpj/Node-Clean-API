@@ -1,4 +1,4 @@
-import MongoHelper from './mongo-helper'
+import MongoHelper from './MongoHelper'
 
 const sut = MongoHelper
 

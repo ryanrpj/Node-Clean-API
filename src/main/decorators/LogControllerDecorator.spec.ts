@@ -1,8 +1,8 @@
-import Controller from '../../presentation/protocols/controller'
+import Controller from '../../presentation/protocols/Controller'
 import { HttpRequest, HttpResponse } from '../../presentation/protocols/http'
-import LogControllerDecorator from './controller'
-import ErrorLogRepository from '../../data/protocols/error-log-repository'
-import { serverError } from '../../presentation/helpers/http-helper'
+import LogControllerDecorator from './LogControllerDecorator'
+import ErrorLogRepository from '../../data/protocols/ErrorLogRepository'
+import HttpHelper from '../../presentation/helpers/HttpHelper'
 
 interface SutTypes {
   sut: LogControllerDecorator
@@ -65,7 +65,7 @@ describe('Log Controller Decorator', () => {
     const error = new Error()
     error.stack = 'any_stack'
 
-    jest.spyOn(controller, 'handle').mockReturnValueOnce(Promise.resolve(serverError(error)))
+    jest.spyOn(controller, 'handle').mockReturnValueOnce(Promise.resolve(HttpHelper.serverError(error)))
 
     const logSpy = jest.spyOn(errorLogRepository, 'logError')
 
