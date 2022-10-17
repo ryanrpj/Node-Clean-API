@@ -1,3 +1,5 @@
 import { json } from 'express'
 
-export const bodyParser = json()
+const bodyParser = json()
+
+export default bodyParser
