@@ -3,6 +3,11 @@ export default {
   coverageProvider: 'v8',
   coverageDirectory: 'coverage',
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  coveragePathIgnorePatterns: [
+    '.d.ts',
+    'server.ts',
+    'env.ts'
+  ],
   testEnvironment: 'node',
   transform: {
     '.+\\.ts$': 'ts-jest'
