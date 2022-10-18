@@ -9,7 +9,7 @@ export default class AccountMongoRepository implements AddAccountRepository {
     const { insertedId } = await collection.insertOne(account)
     const insertedAccount = await collection.findOne({ _id: insertedId })
 
-    delete insertedAccount?.password
+    delete insertedAccount!.password
 
     return MongoHelper.map<AccountModel>(insertedAccount)
   }
