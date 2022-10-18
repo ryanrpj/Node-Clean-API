@@ -1,5 +1,5 @@
-import { HttpResponse } from '../protocols/http'
 import ServerError from '../errors/ServerError'
+import HttpResponse from '../protocols/HttpResponse'
 
 const HttpHelper = {
   badRequest (error: Error): HttpResponse {

@@ -1,6 +1,7 @@
 import Controller from '../../presentation/protocols/Controller'
-import { HttpRequest, HttpResponse } from '../../presentation/protocols/http'
 import ErrorLogRepository from '../../data/protocols/ErrorLogRepository'
+import HttpResponse from '../../presentation/protocols/HttpResponse'
+import HttpRequest from '../../presentation/protocols/HttpRequest'
 
 export default class LogControllerDecorator implements Controller {
   private readonly controller: Controller

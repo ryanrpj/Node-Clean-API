@@ -1,8 +1,9 @@
 import Controller from '../../presentation/protocols/Controller'
-import { HttpRequest, HttpResponse } from '../../presentation/protocols/http'
 import LogControllerDecorator from './LogControllerDecorator'
 import ErrorLogRepository from '../../data/protocols/ErrorLogRepository'
 import HttpHelper from '../../presentation/helpers/HttpHelper'
+import HttpResponse from '../../presentation/protocols/HttpResponse'
+import HttpRequest from '../../presentation/protocols/HttpRequest'
 
 interface SutTypes {
   sut: LogControllerDecorator
