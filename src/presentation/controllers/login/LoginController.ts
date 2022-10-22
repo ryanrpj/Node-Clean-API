@@ -5,7 +5,15 @@ import HttpHelper from '../../helpers/HttpHelper'
 import MissingParamError from '../../errors/MissingParamError'
 
 export default class LoginController implements Controller {
-  async handle (request: HttpRequest): Promise<HttpResponse> {
-    return await Promise.resolve(HttpHelper.badRequest(new MissingParamError('email')))
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    const requiredParams = ['email', 'password']
+
+    for (const param of requiredParams) {
+      if (!httpRequest.body[param]) {
+        return HttpHelper.badRequest(new MissingParamError(param))
+      }
+    }
+
+    return 0 as any
   }
 }
