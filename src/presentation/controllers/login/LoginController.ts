@@ -20,8 +20,12 @@ export default class LoginController implements Controller {
 
     const { email } = httpRequest.body
 
-    if (!this.emailValidator.isValid(email)) {
-      return HttpHelper.badRequest(new InvalidParamError('email'))
+    try {
+      if (!this.emailValidator.isValid(email)) {
+        return HttpHelper.badRequest(new InvalidParamError('email'))
+      }
+    } catch (error: any) {
+      return HttpHelper.serverError(error)
     }
 
     return 0 as any
