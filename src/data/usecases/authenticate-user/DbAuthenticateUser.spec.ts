@@ -1,5 +1,5 @@
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
-import GetAccountByEmailRepository from '../../protocols/GetAccountByEmailRepository'
+import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
 import AccountModel from '../../../domain/models/Account'
 import DbAuthenticateUser from './DbAuthenticateUser'
 

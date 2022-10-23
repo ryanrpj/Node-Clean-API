@@ -1,6 +1,6 @@
 import Controller from '../../presentation/protocols/Controller'
 import LogControllerDecorator from './LogControllerDecorator'
-import ErrorLogRepository from '../../data/protocols/ErrorLogRepository'
+import ErrorLogRepository from '../../data/protocols/db/ErrorLogRepository'
 import HttpHelper from '../../presentation/helpers/http/HttpHelper'
 import HttpResponse from '../../presentation/protocols/HttpResponse'
 import HttpRequest from '../../presentation/protocols/HttpRequest'
