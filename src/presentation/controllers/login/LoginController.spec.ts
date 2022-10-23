@@ -4,10 +4,13 @@ import HttpHelper from '../../helpers/HttpHelper'
 import MissingParamError from '../../errors/MissingParamError'
 import EmailValidator from '../../protocols/EmailValidator'
 import InvalidParamError from '../../errors/InvalidParamError'
+import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
+import AuthenticateUserResult from '../../../domain/models/AuthenticateUserResult'
 
 interface SutTypes {
   sut: Controller
   emailValidator: EmailValidator
+  authenticateUser: AuthenticateUser
 }
 
 class EmailValidatorStub implements EmailValidator {
@@ -16,11 +19,19 @@ class EmailValidatorStub implements EmailValidator {
   }
 }
 
+class AuthenticateUserStub implements AuthenticateUser {
+  async auth (email: string, password: string): Promise<AuthenticateUserResult> {
+    return await Promise.resolve(new AuthenticateUserResult('any_token'))
+  }
+}
+
 const makeSut = (): SutTypes => {
   const emailValidator = new EmailValidatorStub()
+  const authenticateUser = new AuthenticateUserStub()
   return {
-    sut: new LoginController(emailValidator),
-    emailValidator
+    sut: new LoginController(emailValidator, authenticateUser),
+    emailValidator,
+    authenticateUser
   }
 }
 
@@ -81,5 +92,19 @@ describe('Login Controller', () => {
     })
 
     expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
+  })
+
+  test('Should return 401 if invalid credentials are provided', async () => {
+    const { sut, authenticateUser } = makeSut()
+
+    jest.spyOn(authenticateUser, 'auth').mockReturnValueOnce(
+      Promise.resolve(new AuthenticateUserResult())
+    )
+
+    const httpResponse = await sut.handle({
+      body: { email: 'any_email', password: 'any_password' }
+    })
+
+    expect(httpResponse).toEqual(HttpHelper.unauthorized())
   })
 })
