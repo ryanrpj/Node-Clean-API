@@ -6,14 +6,18 @@ import InvalidParamError from '../../errors/InvalidParamError'
 import HttpHelper from '../../helpers/HttpHelper'
 import HttpResponse from '../../protocols/HttpResponse'
 import HttpRequest from '../../protocols/HttpRequest'
+import Validation from '../../helpers/validators/Validation'
 
 export default class SignUpController implements Controller {
   constructor (
     private readonly emailValidator: EmailValidator,
-    private readonly addAccount: AddAccount
+    private readonly addAccount: AddAccount,
+    private readonly validation: Validation
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    this.validation.validate(httpRequest.body)
+
     const requiredFields = ['name', 'email', 'password']
 
     for (const requiredParam of requiredFields) {
