@@ -94,4 +94,15 @@ describe('SignUp Controller', () => {
     expect(response.statusCode).toBe(500)
     expect(response.body).toEqual(new ServerError())
   })
+
+  test('Should return 500 if Validation throws', async () => {
+    const { sut, validation } = makeSut()
+    jest.spyOn(validation, 'validate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const response = await sut.handle(makeHttpRequest())
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toEqual(new ServerError())
+  })
 })
