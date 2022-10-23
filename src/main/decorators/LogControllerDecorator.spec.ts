@@ -12,7 +12,7 @@ interface SutTypes {
 }
 
 class ControllerStub implements Controller {
-  async handle (request: HttpRequest): Promise<HttpResponse> {
+  async handle (_: HttpRequest): Promise<HttpResponse> {
     return {
       statusCode: 200,
       body: { ok: 'ok' }
@@ -21,7 +21,7 @@ class ControllerStub implements Controller {
 }
 
 class ErrorLogRepositoryStub implements ErrorLogRepository {
-  async logError (stack: string): Promise<void> {}
+  async logError (_: string): Promise<void> {}
 }
 
 const makeSut = (): SutTypes => {

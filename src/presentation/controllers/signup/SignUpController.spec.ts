@@ -12,13 +12,13 @@ interface SutTypes {
 }
 
 class ValidationStub implements Validation {
-  validate (input: any): Error | null {
+  validate (_: any): Error | null {
     return null
   }
 }
 
 class AddAccountStub implements AddAccount {
-  async add (account: AddAccountModel): Promise<AccountModel> {
+  async add (_: AddAccountModel): Promise<AccountModel> {
     return {
       id: 'valid_id',
       name: 'valid_name',

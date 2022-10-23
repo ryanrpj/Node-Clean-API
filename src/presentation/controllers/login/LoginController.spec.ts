@@ -14,13 +14,13 @@ interface SutTypes {
 }
 
 class ValidationStub implements Validation {
-  validate (input: any): Error | null {
+  validate (_: any): Error | null {
     return null
   }
 }
 
 class AuthenticateUserStub implements AuthenticateUser {
-  async auth (credentials: AuthenticateCredentials): Promise<string> {
+  async auth (_: AuthenticateCredentials): Promise<string> {
     return 'any_token'
   }
 }

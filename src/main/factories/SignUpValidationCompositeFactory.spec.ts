@@ -8,7 +8,7 @@ import EmailValidator from '../../presentation/protocols/EmailValidator'
 jest.mock('../../presentation/helpers/validators/ValidationComposite')
 
 class EmailValidatorStub implements EmailValidator {
-  isValid (email: string): boolean {
+  isValid (_: string): boolean {
     return true
   }
 }

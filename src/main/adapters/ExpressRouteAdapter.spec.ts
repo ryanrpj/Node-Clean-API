@@ -5,7 +5,7 @@ import ExpressRouteAdapter from './ExpressRouteAdapter'
 import HttpHelper from '../../presentation/helpers/HttpHelper'
 
 class ControllerStub implements Controller {
-  async handle (request: HttpRequest): Promise<HttpResponse> {
+  async handle (_: HttpRequest): Promise<HttpResponse> {
     return { body: { ok: 'ok' }, statusCode: 200 }
   }
 }
