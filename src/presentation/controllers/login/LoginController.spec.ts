@@ -105,6 +105,20 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
   })
 
+  test('Should return 500 if AuthenticateUser throws', async () => {
+    const { sut, authenticateUser } = makeSut()
+
+    jest.spyOn(authenticateUser, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpResponse = await sut.handle({
+      body: { email: 'any_email', password: 'any_password' }
+    })
+
+    expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
+  })
+
   test('Should return 401 if invalid credentials are provided', async () => {
     const { sut, authenticateUser } = makeSut()
 
