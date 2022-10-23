@@ -131,4 +131,15 @@ describe('DbAuthenticateUser', () => {
     const promise = sut.auth(makeCredentials())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should throw if TokenGenerator throws', async () => {
+    const { sut, tokenGenerator } = makeSut()
+
+    jest.spyOn(tokenGenerator, 'generate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.auth(makeCredentials())
+    await expect(promise).rejects.toThrow()
+  })
 })
