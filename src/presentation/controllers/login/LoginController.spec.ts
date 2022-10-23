@@ -80,6 +80,18 @@ describe('Login Controller', () => {
     expect(isValidSpy).toHaveBeenCalledWith('any_email')
   })
 
+  test('Should call AuthenticateUser with correct credentials', async () => {
+    const { sut, authenticateUser } = makeSut()
+
+    const auth = jest.spyOn(authenticateUser, 'auth')
+
+    await sut.handle({
+      body: { email: 'any_email', password: 'any_password' }
+    })
+
+    expect(auth).toHaveBeenCalledWith('any_email', 'any_password')
+  })
+
   test('Should return 500 if EmailValidator throws', async () => {
     const { sut, emailValidator } = makeSut()
 
