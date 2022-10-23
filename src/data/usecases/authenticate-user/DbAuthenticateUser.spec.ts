@@ -92,6 +92,14 @@ describe('DbAuthenticateUser', () => {
     expect(generateSpy).toHaveBeenCalledWith('any_id')
   })
 
+  test('Should return a token if all credentials are valid', async () => {
+    const { sut } = makeSut()
+
+    const credentials = makeCredentials()
+    const authToken = await sut.auth(credentials)
+    expect(authToken).toBe('any_token')
+  })
+
   test('Should return empty token if GetAccountByEmailRepository returns null', async () => {
     const { sut, getAccountByEmailRepository } = makeSut()
 
