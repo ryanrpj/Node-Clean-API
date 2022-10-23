@@ -1,5 +1,6 @@
 import ServerError from '../errors/ServerError'
 import HttpResponse from '../protocols/HttpResponse'
+import UnauthorizedError from '../errors/UnauthorizedError'
 
 const HttpHelper = {
   badRequest (error: Error): HttpResponse {
@@ -12,6 +13,10 @@ const HttpHelper = {
 
   created (body: any): HttpResponse {
     return { statusCode: 201, body }
+  },
+
+  unauthorized (): HttpResponse {
+    return { statusCode: 401, body: new UnauthorizedError() }
   }
 }
 

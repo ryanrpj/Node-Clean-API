@@ -5,9 +5,13 @@ import HttpHelper from '../../helpers/HttpHelper'
 import MissingParamError from '../../errors/MissingParamError'
 import EmailValidator from '../../protocols/EmailValidator'
 import InvalidParamError from '../../errors/InvalidParamError'
+import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 
 export default class LoginController implements Controller {
-  constructor (private readonly emailValidator: EmailValidator) {}
+  constructor (
+    private readonly emailValidator: EmailValidator,
+    private readonly authenticateUser: AuthenticateUser
+  ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredParams = ['email', 'password']
@@ -18,11 +22,17 @@ export default class LoginController implements Controller {
       }
     }
 
-    const { email } = httpRequest.body
+    const { email, password } = httpRequest.body
 
     try {
       if (!this.emailValidator.isValid(email)) {
         return HttpHelper.badRequest(new InvalidParamError('email'))
+      }
+
+      const authResult = await this.authenticateUser.auth(email, password)
+
+      if (!authResult.isAuthenticated()) {
+        return HttpHelper.unauthorized()
       }
     } catch (error: any) {
       return HttpHelper.serverError(error)
