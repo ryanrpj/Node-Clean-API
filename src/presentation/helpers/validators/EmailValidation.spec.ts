@@ -48,4 +48,14 @@ describe('Email Validation', () => {
 
     expect(error).toEqual(new InvalidParamError('email'))
   })
+
+  test('Should throw if EmailValidator throws', () => {
+    const { sut, emailValidator } = makeSut()
+
+    jest.spyOn(emailValidator, 'isValid').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    expect(sut.validate).toThrow()
+  })
 })
