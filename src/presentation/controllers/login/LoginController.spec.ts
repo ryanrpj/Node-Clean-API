@@ -6,6 +6,7 @@ import EmailValidator from '../../protocols/EmailValidator'
 import InvalidParamError from '../../errors/InvalidParamError'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
+import HttpRequest from '../../protocols/HttpRequest'
 
 interface SutTypes {
   sut: Controller
@@ -35,6 +36,10 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const makeHttpRequest = (): HttpRequest => ({
+  body: { email: 'any_email', password: 'any_password' }
+})
+
 describe('Login Controller', () => {
   test('Should call EmailValidator with correct e-mail address', async () => {
     const { sut, emailValidator } = makeSut()
@@ -53,20 +58,14 @@ describe('Login Controller', () => {
 
     const auth = jest.spyOn(authenticateUser, 'auth')
 
-    await sut.handle({
-      body: { email: 'any_email', password: 'any_password' }
-    })
-
-    expect(auth).toHaveBeenCalledWith({ email: 'any_email', password: 'any_password' })
+    await sut.handle(makeHttpRequest())
+    expect(auth).toHaveBeenCalledWith(makeHttpRequest().body)
   })
 
   test('Should return 200 if valid credentials are provided', async () => {
     const { sut } = makeSut()
 
-    const httpResponse = await sut.handle({
-      body: { email: 'any_email', password: 'any_password' }
-    })
-
+    const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(HttpHelper.ok({ access_token: 'any_token' }))
   })
 
@@ -95,10 +94,7 @@ describe('Login Controller', () => {
 
     jest.spyOn(emailValidator, 'isValid').mockReturnValueOnce(false)
 
-    const httpResponse = await sut.handle({
-      body: { email: 'any_email', password: 'any_password' }
-    })
-
+    const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(HttpHelper.badRequest(new InvalidParamError('email')))
   })
 
@@ -107,10 +103,7 @@ describe('Login Controller', () => {
 
     jest.spyOn(authenticateUser, 'auth').mockReturnValueOnce(Promise.resolve(''))
 
-    const httpResponse = await sut.handle({
-      body: { email: 'any_email', password: 'any_password' }
-    })
-
+    const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(HttpHelper.unauthorized())
   })
 
@@ -121,10 +114,7 @@ describe('Login Controller', () => {
       throw new Error()
     })
 
-    const httpResponse = await sut.handle({
-      body: { email: 'any_email', password: 'any_password' }
-    })
-
+    const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
   })
 
@@ -135,10 +125,7 @@ describe('Login Controller', () => {
       throw new Error()
     })
 
-    const httpResponse = await sut.handle({
-      body: { email: 'any_email', password: 'any_password' }
-    })
-
+    const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
   })
 })
