@@ -3,6 +3,7 @@ import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRep
 import AccountModel from '../../../domain/models/Account'
 import DbAuthenticateUser from './DbAuthenticateUser'
 import HashComparer from '../../protocols/criptography/HashComparer'
+import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 
 interface SutTypes {
   sut: AuthenticateUser
@@ -43,14 +44,29 @@ const makeSut = (): SutTypes => {
   return { sut, getAccountByEmailRepository, hashComparer }
 }
 
+const makeCredentials = (): AuthenticateCredentials => ({
+  email: 'any_email',
+  password: 'any_password'
+})
+
 describe('DbAuthenticateUser', () => {
   test('Should call GetAccountByEmailRepository with correct e-mail address', async () => {
     const { sut, getAccountByEmailRepository } = makeSut()
 
     const getSpy = jest.spyOn(getAccountByEmailRepository, 'get')
 
-    await sut.auth({ email: 'any_email', password: 'any_password' })
+    await sut.auth(makeCredentials())
     expect(getSpy).toHaveBeenCalledWith('any_email')
+  })
+
+  test('Should call HashComparer with correct password and hash', async () => {
+    const { sut, hashComparer } = makeSut()
+
+    const compareSpy = jest.spyOn(hashComparer, 'compare')
+
+    const credentials = makeCredentials()
+    await sut.auth(credentials)
+    expect(compareSpy).toHaveBeenCalledWith(credentials.password, 'hashed_password')
   })
 
   test('Should throw if GetAccountByEmailRepository throws', async () => {
@@ -60,7 +76,7 @@ describe('DbAuthenticateUser', () => {
       throw new Error()
     })
 
-    const promise = sut.auth({ email: 'any_email', password: 'any_password' })
+    const promise = sut.auth(makeCredentials())
     await expect(promise).rejects.toThrow()
   })
 
@@ -71,16 +87,7 @@ describe('DbAuthenticateUser', () => {
       throw new Error()
     })
 
-    const promise = sut.auth({ email: 'any_email', password: 'any_password' })
+    const promise = sut.auth(makeCredentials())
     await expect(promise).rejects.toThrow()
-  })
-
-  test('Should call HashComparer with correct password and hash', async () => {
-    const { sut, hashComparer } = makeSut()
-
-    const compareSpy = jest.spyOn(hashComparer, 'compare')
-
-    await sut.auth({ email: 'any_email', password: 'any_password' })
-    expect(compareSpy).toHaveBeenCalledWith('any_password', 'hashed_password')
   })
 })
