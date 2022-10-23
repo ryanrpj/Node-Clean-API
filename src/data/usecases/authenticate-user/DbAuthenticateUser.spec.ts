@@ -69,6 +69,15 @@ describe('DbAuthenticateUser', () => {
     expect(compareSpy).toHaveBeenCalledWith(credentials.password, 'hashed_password')
   })
 
+  test('Should return empty token if no account is found', async () => {
+    const { sut, getAccountByEmailRepository } = makeSut()
+
+    jest.spyOn(getAccountByEmailRepository, 'get').mockReturnValueOnce(Promise.resolve(null as any))
+
+    const authToken = await sut.auth(makeCredentials())
+    expect(authToken).toBe('')
+  })
+
   test('Should throw if GetAccountByEmailRepository throws', async () => {
     const { sut, getAccountByEmailRepository } = makeSut()
 
