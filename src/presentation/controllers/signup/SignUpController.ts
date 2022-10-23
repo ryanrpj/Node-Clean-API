@@ -1,8 +1,5 @@
 import { AddAccount } from '../../../domain/usecases/AddAccount'
 import Controller from '../../protocols/Controller'
-import EmailValidator from '../../protocols/EmailValidator'
-import MissingParamError from '../../errors/MissingParamError'
-import InvalidParamError from '../../errors/InvalidParamError'
 import HttpHelper from '../../helpers/HttpHelper'
 import HttpResponse from '../../protocols/HttpResponse'
 import HttpRequest from '../../protocols/HttpRequest'
@@ -10,29 +7,19 @@ import Validation from '../../helpers/validators/Validation'
 
 export default class SignUpController implements Controller {
   constructor (
-    private readonly emailValidator: EmailValidator,
     private readonly addAccount: AddAccount,
     private readonly validation: Validation
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const validationError = this.validation.validate(httpRequest.body)
-
-    if (validationError) {
-      return HttpHelper.badRequest(validationError)
-    }
-
-    const requiredFields = ['name', 'email', 'password']
-
-    for (const requiredParam of requiredFields) {
-      if (!httpRequest.body[requiredParam]) { return HttpHelper.badRequest(new MissingParamError(requiredParam)) }
-    }
-
     try {
-      const { name, email, password } = httpRequest.body
-      if (!this.emailValidator.isValid(email)) {
-        return HttpHelper.badRequest(new InvalidParamError('email'))
+      const validationError = this.validation.validate(httpRequest.body)
+
+      if (validationError) {
+        return HttpHelper.badRequest(validationError)
       }
+
+      const { name, email, password } = httpRequest.body
 
       const account = await this.addAccount.add({ name, email, password })
 
