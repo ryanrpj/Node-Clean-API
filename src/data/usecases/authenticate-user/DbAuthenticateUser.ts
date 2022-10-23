@@ -1,12 +1,21 @@
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
+import HashComparer from '../../protocols/criptography/HashComparer'
 
 export default class DbAuthenticateUser implements AuthenticateUser {
-  constructor (private readonly getAccountByEmailRepository: GetAccountByEmailRepository) {}
+  constructor (
+    private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
+    private readonly hashComparer: HashComparer
+  ) {}
 
   async auth (credentials: AuthenticateCredentials): Promise<string> {
-    await this.getAccountByEmailRepository.get(credentials.email)
+    const account = await this.getAccountByEmailRepository.get(credentials.email)
+
+    if (account) {
+      this.hashComparer.compare(credentials.password, account.password)
+    }
+
     return ''
   }
 }
