@@ -1,3 +1,5 @@
+import AuthenticateCredentials from './AuthenticateCredentials'
+
 export default interface AuthenticateUser {
-  auth: (email: string, password: string) => Promise<string>
+  auth: (credentials: AuthenticateCredentials) => Promise<string>
 }

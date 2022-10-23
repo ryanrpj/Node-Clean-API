@@ -5,6 +5,7 @@ import MissingParamError from '../../errors/MissingParamError'
 import EmailValidator from '../../protocols/EmailValidator'
 import InvalidParamError from '../../errors/InvalidParamError'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
+import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 
 interface SutTypes {
   sut: Controller
@@ -19,7 +20,7 @@ class EmailValidatorStub implements EmailValidator {
 }
 
 class AuthenticateUserStub implements AuthenticateUser {
-  async auth (email: string, password: string): Promise<string> {
+  async auth (credentials: AuthenticateCredentials): Promise<string> {
     return 'any_token'
   }
 }
@@ -56,7 +57,7 @@ describe('Login Controller', () => {
       body: { email: 'any_email', password: 'any_password' }
     })
 
-    expect(auth).toHaveBeenCalledWith('any_email', 'any_password')
+    expect(auth).toHaveBeenCalledWith({ email: 'any_email', password: 'any_password' })
   })
 
   test('Should return 200 if valid credentials are provided', async () => {
