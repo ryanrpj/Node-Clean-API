@@ -34,10 +34,10 @@ export default class LoginController implements Controller {
       if (authToken.length === 0) {
         return HttpHelper.unauthorized()
       }
+
+      return HttpHelper.ok({ access_token: authToken })
     } catch (error: any) {
       return HttpHelper.serverError(error)
     }
-
-    return 0 as any
   }
 }

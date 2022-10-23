@@ -11,6 +11,10 @@ const HttpHelper = {
     return { statusCode: 500, body: new ServerError(error) }
   },
 
+  ok (body: any): HttpResponse {
+    return { statusCode: 200, body }
+  },
+
   created (body: any): HttpResponse {
     return { statusCode: 201, body }
   },
