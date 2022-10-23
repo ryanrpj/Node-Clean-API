@@ -21,7 +21,7 @@ class EmailValidatorStub implements EmailValidator {
 
 class AuthenticateUserStub implements AuthenticateUser {
   async auth (email: string, password: string): Promise<AuthenticateUserResult> {
-    return await Promise.resolve(new AuthenticateUserResult('any_token'))
+    return new AuthenticateUserResult('any_token')
   }
 }
 
