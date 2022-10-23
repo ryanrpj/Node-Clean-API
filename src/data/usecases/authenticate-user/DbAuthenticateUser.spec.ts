@@ -4,11 +4,13 @@ import AccountModel from '../../../domain/models/Account'
 import DbAuthenticateUser from './DbAuthenticateUser'
 import HashComparer from '../../protocols/criptography/HashComparer'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
+import TokenGenerator from '../../protocols/criptography/TokenGenerator'
 
 interface SutTypes {
   sut: AuthenticateUser
   getAccountByEmailRepository: GetAccountByEmailRepository
   hashComparer: HashComparer
+  tokenGenerator: TokenGenerator
 }
 
 const makeGetAccountByEmailRepositoryStub = (): GetAccountByEmailRepository => {
@@ -36,12 +38,23 @@ const makeHashComparerStub = (): HashComparer => {
   return new HashComparerStub()
 }
 
+const makeTokenGeneratorStub = (): TokenGenerator => {
+  class TokenGeneratorStub implements TokenGenerator {
+    async generate (data: any): Promise<string> {
+      return await Promise.resolve('any_token')
+    }
+  }
+
+  return new TokenGeneratorStub()
+}
+
 const makeSut = (): SutTypes => {
   const getAccountByEmailRepository = makeGetAccountByEmailRepositoryStub()
   const hashComparer = makeHashComparerStub()
-  const sut = new DbAuthenticateUser(getAccountByEmailRepository, hashComparer)
+  const tokenGenerator = makeTokenGeneratorStub()
+  const sut = new DbAuthenticateUser(getAccountByEmailRepository, hashComparer, tokenGenerator)
 
-  return { sut, getAccountByEmailRepository, hashComparer }
+  return { sut, getAccountByEmailRepository, hashComparer, tokenGenerator }
 }
 
 const makeCredentials = (): AuthenticateCredentials => ({
@@ -67,6 +80,16 @@ describe('DbAuthenticateUser', () => {
     const credentials = makeCredentials()
     await sut.auth(credentials)
     expect(compareSpy).toHaveBeenCalledWith(credentials.password, 'hashed_password')
+  })
+
+  test('Should call TokenGenerator with correct id', async () => {
+    const { sut, tokenGenerator } = makeSut()
+
+    const generateSpy = jest.spyOn(tokenGenerator, 'generate')
+
+    const credentials = makeCredentials()
+    await sut.auth(credentials)
+    expect(generateSpy).toHaveBeenCalledWith('any_id')
   })
 
   test('Should return empty token if GetAccountByEmailRepository returns null', async () => {
