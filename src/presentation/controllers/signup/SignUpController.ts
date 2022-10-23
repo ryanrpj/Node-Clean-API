@@ -1,6 +1,6 @@
 import { AddAccount } from '../../../domain/usecases/AddAccount'
 import Controller from '../../protocols/Controller'
-import HttpHelper from '../../helpers/HttpHelper'
+import HttpHelper from '../../helpers/http/HttpHelper'
 import HttpResponse from '../../protocols/HttpResponse'
 import HttpRequest from '../../protocols/HttpRequest'
 import Validation from '../../protocols/Validation'

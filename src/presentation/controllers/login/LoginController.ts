@@ -1,7 +1,7 @@
 import Controller from '../../protocols/Controller'
 import HttpRequest from '../../protocols/HttpRequest'
 import HttpResponse from '../../protocols/HttpResponse'
-import HttpHelper from '../../helpers/HttpHelper'
+import HttpHelper from '../../helpers/http/HttpHelper'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import Validation from '../../protocols/Validation'
 

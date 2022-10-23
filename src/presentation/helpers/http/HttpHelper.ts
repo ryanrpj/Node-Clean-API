@@ -1,6 +1,6 @@
-import ServerError from '../errors/ServerError'
-import HttpResponse from '../protocols/HttpResponse'
-import UnauthorizedError from '../errors/UnauthorizedError'
+import ServerError from '../../errors/ServerError'
+import HttpResponse from '../../protocols/HttpResponse'
+import UnauthorizedError from '../../errors/UnauthorizedError'
 
 const HttpHelper = {
   badRequest (error: Error): HttpResponse {
