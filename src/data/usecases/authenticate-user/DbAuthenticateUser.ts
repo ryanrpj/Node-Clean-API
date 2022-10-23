@@ -2,11 +2,13 @@ import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
 import HashComparer from '../../protocols/criptography/HashComparer'
+import TokenGenerator from '../../protocols/criptography/TokenGenerator'
 
 export default class DbAuthenticateUser implements AuthenticateUser {
   constructor (
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
-    private readonly hashComparer: HashComparer
+    private readonly hashComparer: HashComparer,
+    private readonly tokenGenerator: TokenGenerator
   ) {}
 
   async auth (credentials: AuthenticateCredentials): Promise<string> {
@@ -14,6 +16,7 @@ export default class DbAuthenticateUser implements AuthenticateUser {
 
     if (account) {
       this.hashComparer.compare(credentials.password, account.password)
+      await this.tokenGenerator.generate(account.id)
     }
 
     return ''
