@@ -10,9 +10,9 @@ import SignUpValidationCompositeFactory from './SignUpValidationCompositeFactory
 const SignUpControllerFactory = {
   makeSignUpController (): Controller {
     const salt = 12
-    const encrypter = new BcryptAdapter(salt)
+    const hasher = new BcryptAdapter(salt)
     const addAccountRepository = new AccountMongoRepository()
-    const addAccount = new DbAddAccount(encrypter, addAccountRepository)
+    const addAccount = new DbAddAccount(hasher, addAccountRepository)
     const validationComposite = SignUpValidationCompositeFactory.makeSignUpValidationComposite()
     const signUpController = new SignUpController(addAccount, validationComposite)
     const errorLogRepository = new LogMongoRepository()
