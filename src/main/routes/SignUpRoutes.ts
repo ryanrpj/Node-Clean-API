@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import SignUpControllerFactory from '../factories/SignUpControllerFactory'
+import SignUpControllerFactory from '../factories/signup/SignUpControllerFactory'
 import ExpressRouteAdapter from '../adapters/ExpressRouteAdapter'
 
 const registerSignUpRoutes = (router: Router): void => {
