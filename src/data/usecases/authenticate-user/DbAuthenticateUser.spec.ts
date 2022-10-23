@@ -64,6 +64,17 @@ describe('DbAuthenticateUser', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should throw if HashComparer throws', async () => {
+    const { sut, hashComparer } = makeSut()
+
+    jest.spyOn(hashComparer, 'compare').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.auth({ email: 'any_email', password: 'any_password' })
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call HashComparer with correct password and hash', async () => {
     const { sut, hashComparer } = makeSut()
 
