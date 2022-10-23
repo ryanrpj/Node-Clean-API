@@ -36,7 +36,17 @@ describe('DbAuthenticateUser', () => {
     const getSpy = jest.spyOn(getAccountByEmailRepository, 'get')
 
     await sut.auth({ email: 'any_email', password: 'any_password' })
-
     expect(getSpy).toHaveBeenCalledWith('any_email')
+  })
+
+  test('Should throw if GetAccountByEmailRepository throws', async () => {
+    const { sut, getAccountByEmailRepository } = makeSut()
+
+    jest.spyOn(getAccountByEmailRepository, 'get').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+
+    const promise = sut.auth({ email: 'any_email', password: 'any_password' })
+    await expect(promise).rejects.toThrow()
   })
 })
