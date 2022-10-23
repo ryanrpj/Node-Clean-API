@@ -5,7 +5,6 @@ import MissingParamError from '../../errors/MissingParamError'
 import EmailValidator from '../../protocols/EmailValidator'
 import InvalidParamError from '../../errors/InvalidParamError'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
-import AuthenticateUserResult from '../../../domain/models/AuthenticateUserResult'
 
 interface SutTypes {
   sut: Controller
@@ -20,8 +19,8 @@ class EmailValidatorStub implements EmailValidator {
 }
 
 class AuthenticateUserStub implements AuthenticateUser {
-  async auth (email: string, password: string): Promise<AuthenticateUserResult> {
-    return new AuthenticateUserResult('any_token')
+  async auth (email: string, password: string): Promise<string> {
+    return 'any_token'
   }
 }
 
@@ -109,9 +108,7 @@ describe('Login Controller', () => {
   test('Should return 401 if invalid credentials are provided', async () => {
     const { sut, authenticateUser } = makeSut()
 
-    jest.spyOn(authenticateUser, 'auth').mockReturnValueOnce(
-      Promise.resolve(new AuthenticateUserResult())
-    )
+    jest.spyOn(authenticateUser, 'auth').mockReturnValueOnce(Promise.resolve(''))
 
     const httpResponse = await sut.handle({
       body: { email: 'any_email', password: 'any_password' }

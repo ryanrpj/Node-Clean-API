@@ -29,9 +29,9 @@ export default class LoginController implements Controller {
         return HttpHelper.badRequest(new InvalidParamError('email'))
       }
 
-      const authResult = await this.authenticateUser.auth(email, password)
+      const authToken = await this.authenticateUser.auth(email, password)
 
-      if (!authResult.isAuthenticated()) {
+      if (authToken.length === 0) {
         return HttpHelper.unauthorized()
       }
     } catch (error: any) {
