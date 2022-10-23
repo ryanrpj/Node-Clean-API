@@ -3,7 +3,7 @@ import HttpRequest from '../../protocols/HttpRequest'
 import HttpResponse from '../../protocols/HttpResponse'
 import HttpHelper from '../../helpers/HttpHelper'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
-import Validation from '../../helpers/validators/Validation'
+import Validation from '../../protocols/Validation'
 
 export default class LoginController implements Controller {
   constructor (

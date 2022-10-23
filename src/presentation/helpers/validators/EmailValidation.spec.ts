@@ -1,4 +1,4 @@
-import Validation from './Validation'
+import Validation from '../../protocols/Validation'
 import EmailValidation from './EmailValidation'
 import EmailValidator from '../../protocols/EmailValidator'
 import InvalidParamError from '../../errors/InvalidParamError'

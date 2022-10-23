@@ -1,4 +1,4 @@
-import Validation from './Validation'
+import Validation from '../../protocols/Validation'
 import RequiredFieldValidation from './RequiredFieldValidation'
 import MissingParamError from '../../errors/MissingParamError'
 

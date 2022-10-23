@@ -5,7 +5,7 @@ import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 import HttpRequest from '../../protocols/HttpRequest'
 import ServerError from '../../errors/ServerError'
-import Validation from '../../helpers/validators/Validation'
+import Validation from '../../protocols/Validation'
 
 interface SutTypes {
   sut: Controller

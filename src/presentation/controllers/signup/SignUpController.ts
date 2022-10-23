@@ -3,7 +3,7 @@ import Controller from '../../protocols/Controller'
 import HttpHelper from '../../helpers/HttpHelper'
 import HttpResponse from '../../protocols/HttpResponse'
 import HttpRequest from '../../protocols/HttpRequest'
-import Validation from '../../helpers/validators/Validation'
+import Validation from '../../protocols/Validation'
 
 export default class SignUpController implements Controller {
   constructor (

@@ -1,4 +1,4 @@
-import Validation from './Validation'
+import Validation from '../../protocols/Validation'
 import ValidationComposite from './ValidationComposite'
 
 class ValidationStub implements Validation {
