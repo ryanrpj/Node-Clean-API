@@ -59,6 +59,16 @@ describe('Login Controller', () => {
     expect(auth).toHaveBeenCalledWith('any_email', 'any_password')
   })
 
+  test('Should return 200 if valid credentials are provided', async () => {
+    const { sut } = makeSut()
+
+    const httpResponse = await sut.handle({
+      body: { email: 'any_email', password: 'any_password' }
+    })
+
+    expect(httpResponse).toEqual(HttpHelper.ok({ access_token: 'any_token' }))
+  })
+
   test('Should return 400 if no e-mail is provided', async () => {
     const { sut } = makeSut()
 
