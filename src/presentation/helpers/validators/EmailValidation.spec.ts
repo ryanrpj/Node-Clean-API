@@ -23,11 +23,20 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Email Validation', () => {
-  test('Should not return an error when e-mail address is valid', () => {
+  test('Should call EmailValidator with correct e-mail address', () => {
+    const { sut, emailValidator } = makeSut()
+
+    const isValid = jest.spyOn(emailValidator, 'isValid')
+    sut.validate({ email: 'valid_email' })
+
+    expect(isValid).toHaveBeenCalledWith('valid_email')
+  })
+
+  test('Should return null when e-mail address is valid', () => {
     const { sut } = makeSut()
     const error = sut.validate({ email: 'isValid' })
 
-    expect(error).toBe(null)
+    expect(error).toBeNull()
   })
 
   test('Should return an error when e-mail address is invalid', () => {
