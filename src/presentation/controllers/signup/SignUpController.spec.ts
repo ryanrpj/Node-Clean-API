@@ -23,7 +23,7 @@ class AddAccountStub implements AddAccount {
       id: 'valid_id',
       name: 'valid_name',
       email: 'valid_email@mail.com'
-    }
+    } as any
   }
 }
 
