@@ -15,7 +15,7 @@ export default class DbAuthenticateUser implements AuthenticateUser {
     const account = await this.getAccountByEmailRepository.get(credentials.email)
 
     if (account) {
-      const passwordMatches = this.hashComparer.compare(credentials.password, account.password)
+      const passwordMatches = await this.hashComparer.compare(credentials.password, account.password)
 
       if (passwordMatches) {
         return await this.encrypter.encrypt(account.id)

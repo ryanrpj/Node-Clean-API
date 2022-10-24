@@ -30,7 +30,7 @@ const makeGetAccountByEmailRepositoryStub = (): GetAccountByEmailRepository => {
 
 const makeHashComparerStub = (): HashComparer => {
   class HashComparerStub implements HashComparer {
-    compare (_: string, __: string): boolean {
+    async compare (_: string, __: string): Promise<boolean> {
       return true
     }
   }
@@ -41,7 +41,7 @@ const makeHashComparerStub = (): HashComparer => {
 const makeEncrypterStub = (): Encrypter => {
   class EncrypterStub implements Encrypter {
     async encrypt (data: any): Promise<string> {
-      return await Promise.resolve('any_token')
+      return 'any_token'
     }
   }
 
@@ -112,7 +112,7 @@ describe('DbAuthenticateUser', () => {
   test('Should return empty token if HashComparer returns false', async () => {
     const { sut, hashComparer } = makeSut()
 
-    jest.spyOn(hashComparer, 'compare').mockReturnValueOnce(false)
+    jest.spyOn(hashComparer, 'compare').mockReturnValueOnce(Promise.resolve(false))
 
     const authToken = await sut.auth(makeCredentials())
     expect(authToken).toBe('')
