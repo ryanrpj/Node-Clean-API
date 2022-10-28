@@ -12,7 +12,7 @@ export default class DbAuthenticateUser implements AuthenticateUser {
   ) {}
 
   async auth (credentials: AuthenticateCredentials): Promise<string> {
-    const account = await this.getAccountByEmailRepository.get(credentials.email)
+    const account = await this.getAccountByEmailRepository.getByEmail(credentials.email)
 
     if (account) {
       const passwordMatches = await this.hashComparer.compare(credentials.password, account.password)

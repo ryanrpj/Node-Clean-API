@@ -15,7 +15,7 @@ interface SutTypes {
 
 const makeGetAccountByEmailRepositoryStub = (): GetAccountByEmailRepository => {
   class GetAccountByEmailRepositoryStub implements GetAccountByEmailRepository {
-    async get (_: string): Promise<AccountModel> {
+    async getByEmail (_: string): Promise<AccountModel> {
       return {
         id: 'any_id',
         name: 'any_name',
@@ -66,7 +66,7 @@ describe('DbAuthenticateUser', () => {
   test('Should call GetAccountByEmailRepository with correct e-mail address', async () => {
     const { sut, getAccountByEmailRepository } = makeSut()
 
-    const getSpy = jest.spyOn(getAccountByEmailRepository, 'get')
+    const getSpy = jest.spyOn(getAccountByEmailRepository, 'getByEmail')
 
     await sut.auth(makeCredentials())
     expect(getSpy).toHaveBeenCalledWith('any_email')
@@ -103,7 +103,7 @@ describe('DbAuthenticateUser', () => {
   test('Should return empty token if GetAccountByEmailRepository returns null', async () => {
     const { sut, getAccountByEmailRepository } = makeSut()
 
-    jest.spyOn(getAccountByEmailRepository, 'get').mockReturnValueOnce(Promise.resolve(null as any))
+    jest.spyOn(getAccountByEmailRepository, 'getByEmail').mockReturnValueOnce(Promise.resolve(null as any))
 
     const authToken = await sut.auth(makeCredentials())
     expect(authToken).toBe('')
@@ -121,7 +121,7 @@ describe('DbAuthenticateUser', () => {
   test('Should throw if GetAccountByEmailRepository throws', async () => {
     const { sut, getAccountByEmailRepository } = makeSut()
 
-    jest.spyOn(getAccountByEmailRepository, 'get').mockImplementationOnce(async () => {
+    jest.spyOn(getAccountByEmailRepository, 'getByEmail').mockImplementationOnce(async () => {
       throw new Error()
     })
 
