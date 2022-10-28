@@ -38,8 +38,8 @@ describe('Bcrypt Adapter', function () {
 
     jest.spyOn(bcrypt, 'hash').mockImplementationOnce(async () => await Promise.reject(new Error()))
 
-    const encryptPromise = sut.hash('any_value')
-    await expect(encryptPromise).rejects.toThrow()
+    const hashPromise = sut.hash('any_value')
+    await expect(hashPromise).rejects.toThrow()
   })
 
   test('Should call compare with correct values', async () => {
