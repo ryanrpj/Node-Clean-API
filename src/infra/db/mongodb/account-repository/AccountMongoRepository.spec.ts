@@ -45,4 +45,11 @@ describe('Account Mongo Repository', () => {
     expect(account.email).toStrictEqual('any_email')
     expect(account.password).toStrictEqual('hashed_password')
   })
+
+  test('Should return null if getByEmail does not find an account', async () => {
+    const sut = new AccountMongoRepository()
+
+    const account = await sut.getByEmail('any_email')
+    expect(account).toBeFalsy()
+  })
 })
