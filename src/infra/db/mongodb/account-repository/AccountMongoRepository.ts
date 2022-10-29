@@ -2,8 +2,9 @@ import AddAccountRepository from '../../../../data/protocols/db/AddAccountReposi
 import { AddAccountModel } from '../../../../domain/usecases/AddAccount'
 import AccountModel from '../../../../domain/models/Account'
 import MongoHelper from '../helpers/MongoHelper'
+import GetAccountByEmailRepository from '../../../../data/protocols/db/GetAccountByEmailRepository'
 
-export default class AccountMongoRepository implements AddAccountRepository {
+export default class AccountMongoRepository implements AddAccountRepository, GetAccountByEmailRepository {
   async add (account: AddAccountModel): Promise<AccountModel> {
     const collection = MongoHelper.getCollection('accounts')
     const { insertedId } = await collection.insertOne(account)
@@ -12,5 +13,12 @@ export default class AccountMongoRepository implements AddAccountRepository {
     delete insertedAccount!.password
 
     return MongoHelper.map<AccountModel>(insertedAccount)
+  }
+
+  async getByEmail (email: string): Promise<AccountModel> {
+    const collection = MongoHelper.getCollection('accounts')
+    const accountFromDb = await collection.findOne({ email })
+
+    return MongoHelper.map<AccountModel>(accountFromDb)
   }
 }
