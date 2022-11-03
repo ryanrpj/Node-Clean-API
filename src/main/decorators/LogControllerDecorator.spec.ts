@@ -1,7 +1,7 @@
 import Controller from '../../presentation/protocols/Controller'
 import LogControllerDecorator from './LogControllerDecorator'
-import ErrorLogRepository from '../../data/protocols/ErrorLogRepository'
-import HttpHelper from '../../presentation/helpers/HttpHelper'
+import ErrorLogRepository from '../../data/protocols/db/ErrorLogRepository'
+import HttpHelper from '../../presentation/helpers/http/HttpHelper'
 import HttpResponse from '../../presentation/protocols/HttpResponse'
 import HttpRequest from '../../presentation/protocols/HttpRequest'
 
@@ -12,7 +12,7 @@ interface SutTypes {
 }
 
 class ControllerStub implements Controller {
-  async handle (request: HttpRequest): Promise<HttpResponse> {
+  async handle (_: HttpRequest): Promise<HttpResponse> {
     return {
       statusCode: 200,
       body: { ok: 'ok' }
@@ -21,7 +21,7 @@ class ControllerStub implements Controller {
 }
 
 class ErrorLogRepositoryStub implements ErrorLogRepository {
-  async logError (stack: string): Promise<void> {}
+  async logError (_: string): Promise<void> {}
 }
 
 const makeSut = (): SutTypes => {

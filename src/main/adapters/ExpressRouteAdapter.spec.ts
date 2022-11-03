@@ -2,10 +2,10 @@ import Controller from '../../presentation/protocols/Controller'
 import HttpRequest from '../../presentation/protocols/HttpRequest'
 import HttpResponse from '../../presentation/protocols/HttpResponse'
 import ExpressRouteAdapter from './ExpressRouteAdapter'
-import HttpHelper from '../../presentation/helpers/HttpHelper'
+import HttpHelper from '../../presentation/helpers/http/HttpHelper'
 
 class ControllerStub implements Controller {
-  async handle (request: HttpRequest): Promise<HttpResponse> {
+  async handle (_: HttpRequest): Promise<HttpResponse> {
     return { body: { ok: 'ok' }, statusCode: 200 }
   }
 }

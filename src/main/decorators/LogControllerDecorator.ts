@@ -1,5 +1,5 @@
 import Controller from '../../presentation/protocols/Controller'
-import ErrorLogRepository from '../../data/protocols/ErrorLogRepository'
+import ErrorLogRepository from '../../data/protocols/db/ErrorLogRepository'
 import HttpResponse from '../../presentation/protocols/HttpResponse'
 import HttpRequest from '../../presentation/protocols/HttpRequest'
 
