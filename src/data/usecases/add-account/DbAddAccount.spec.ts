@@ -85,6 +85,17 @@ describe('DbAddAccount Usecase', () => {
     expect(getSpy).toHaveBeenCalledWith('valid_email')
   })
 
+  test('Should throw if GetAccountByEmailRepository throws', async () => {
+    const { sut, getAccountByEmailRepository } = makeSut()
+
+    jest.spyOn(getAccountByEmailRepository, 'getByEmail').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+
+    const promise = sut.add(makeFakeAccount())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call AddAccountRepository with correct values', async () => {
     const { sut, addAccountRepository } = makeSut()
     const addSpy = jest.spyOn(addAccountRepository, 'add')
