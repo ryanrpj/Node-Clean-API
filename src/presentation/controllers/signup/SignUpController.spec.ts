@@ -4,11 +4,14 @@ import { AddAccount, AddAccountModel } from '../../../domain/usecases/AddAccount
 import AccountModel from '../../../domain/models/Account'
 import Validation from '../../protocols/Validation'
 import HttpRequest from '../../protocols/HttpRequest'
+import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
+import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 
 interface SutTypes {
   sut: SignUpController
   addAccount: AddAccount
   validation: Validation
+  authenticateUser: AuthenticateUser
 }
 
 class ValidationStub implements Validation {
@@ -27,11 +30,18 @@ class AddAccountStub implements AddAccount {
   }
 }
 
+class AuthenticateUserStub implements AuthenticateUser {
+  async auth (_: AuthenticateCredentials): Promise<string> {
+    return 'any_token'
+  }
+}
+
 const makeSut = (): SutTypes => {
   const addAccountStub = new AddAccountStub()
   const validationStub = new ValidationStub()
-  const sut = new SignUpController(addAccountStub, validationStub)
-  return { sut, addAccount: addAccountStub, validation: validationStub }
+  const authenticateUserStub = new AuthenticateUserStub()
+  const sut = new SignUpController(addAccountStub, validationStub, authenticateUserStub)
+  return { sut, addAccount: addAccountStub, validation: validationStub, authenticateUser: authenticateUserStub }
 }
 
 const makeHttpRequest = (): HttpRequest => ({
@@ -60,6 +70,17 @@ describe('SignUp Controller', () => {
     const httpRequest = makeHttpRequest()
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should call AuthenticateUser with correct credentials', async () => {
+    const { sut, authenticateUser } = makeSut()
+    const authenticateUserSpy = jest.spyOn(authenticateUser, 'auth')
+
+    const httpRequest = makeHttpRequest()
+    await sut.handle(httpRequest)
+
+    const { email, password } = httpRequest.body
+    expect(authenticateUserSpy).toHaveBeenCalledWith({ email, password })
   })
 
   test('Should return 201 if all provided values are valid', async () => {
