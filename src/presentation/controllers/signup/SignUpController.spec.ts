@@ -7,6 +7,7 @@ import HttpRequest from '../../protocols/HttpRequest'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
 import HttpHelper from '../../helpers/http/HttpHelper'
+import EmailAlreadyInUseError from '../../errors/EmailAlreadyInUseError'
 
 interface SutTypes {
   sut: SignUpController
@@ -102,6 +103,15 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(makeHttpRequest())
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new Error('any_error'))
+  })
+
+  test('Should return 403 if AddAccount returns null', async () => {
+    const { sut, addAccount } = makeSut()
+
+    jest.spyOn(addAccount, 'add').mockImplementationOnce(async () => null)
+
+    const response = await sut.handle(makeHttpRequest())
+    expect(response).toEqual(HttpHelper.forbidden(new EmailAlreadyInUseError()))
   })
 
   test('Should return 500 if Validation throws', async () => {
