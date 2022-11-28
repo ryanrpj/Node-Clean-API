@@ -91,11 +91,7 @@ describe('SignUp Controller', () => {
 
     const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(201)
-    expect(response.body).toEqual({
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email@mail.com'
-    })
+    expect(response.body).toEqual({ access_token: 'any_token' })
   })
 
   test('Should return 400 if Validation returns an error', async () => {
