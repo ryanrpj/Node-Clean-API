@@ -6,6 +6,7 @@ import Validation from '../../protocols/Validation'
 import HttpRequest from '../../protocols/HttpRequest'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
+import HttpHelper from '../../helpers/http/HttpHelper'
 
 interface SutTypes {
   sut: SignUpController
@@ -107,15 +108,6 @@ describe('SignUp Controller', () => {
     expect(response.body).toEqual(new Error('any_error'))
   })
 
-  test('Should return 500 if AddAccount throws', async () => {
-    const { sut, addAccount } = makeSut()
-    jest.spyOn(addAccount, 'add').mockImplementationOnce(async (_) => await Promise.reject(new Error()))
-
-    const response = await sut.handle(makeHttpRequest())
-    expect(response.statusCode).toBe(500)
-    expect(response.body).toEqual(new ServerError())
-  })
-
   test('Should return 500 if Validation throws', async () => {
     const { sut, validation } = makeSut()
     jest.spyOn(validation, 'validate').mockImplementationOnce(() => {
@@ -125,5 +117,25 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(makeHttpRequest())
     expect(response.statusCode).toBe(500)
     expect(response.body).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if AddAccount throws', async () => {
+    const { sut, addAccount } = makeSut()
+    jest.spyOn(addAccount, 'add').mockImplementationOnce(async (_) => await Promise.reject(new Error()))
+
+    const response = await sut.handle(makeHttpRequest())
+    expect(response.statusCode).toBe(500)
+    expect(response.body).toEqual(new ServerError())
+  })
+
+  test('Should return 500 if AuthenticateUser throws', async () => {
+    const { sut, authenticateUser } = makeSut()
+
+    jest.spyOn(authenticateUser, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpResponse = await sut.handle(makeHttpRequest())
+    expect(httpResponse).toEqual(HttpHelper.serverError(new Error()))
   })
 })
