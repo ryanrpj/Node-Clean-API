@@ -4,11 +4,13 @@ import HttpHelper from '../../helpers/http/HttpHelper'
 import HttpResponse from '../../protocols/HttpResponse'
 import HttpRequest from '../../protocols/HttpRequest'
 import Validation from '../../protocols/Validation'
+import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
 
 export default class SignUpController implements Controller {
   constructor (
     private readonly addAccount: AddAccount,
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly authenticateUser: AuthenticateUser
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -22,6 +24,8 @@ export default class SignUpController implements Controller {
       const { name, email, password } = httpRequest.body
 
       const account = await this.addAccount.add({ name, email, password })
+
+      await this.authenticateUser.auth({ email, password })
 
       return HttpHelper.created(account)
     } catch (error: any) {
