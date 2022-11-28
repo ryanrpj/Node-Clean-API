@@ -5,6 +5,7 @@ import HttpResponse from '../../protocols/HttpResponse'
 import HttpRequest from '../../protocols/HttpRequest'
 import Validation from '../../protocols/Validation'
 import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
+import EmailAlreadyInUseError from '../../errors/EmailAlreadyInUseError'
 
 export default class SignUpController implements Controller {
   constructor (
@@ -23,7 +24,11 @@ export default class SignUpController implements Controller {
 
       const { name, email, password } = httpRequest.body
 
-      await this.addAccount.add({ name, email, password })
+      const createdAccount = await this.addAccount.add({ name, email, password })
+
+      if (!createdAccount) {
+        return HttpHelper.forbidden(new EmailAlreadyInUseError())
+      }
 
       const authToken = await this.authenticateUser.auth({ email, password })
 

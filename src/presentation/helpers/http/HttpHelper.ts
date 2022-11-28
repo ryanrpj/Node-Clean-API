@@ -21,6 +21,10 @@ const HttpHelper = {
 
   unauthorized (): HttpResponse {
     return { statusCode: 401, body: new UnauthorizedError() }
+  },
+
+  forbidden (error: any): HttpResponse {
+    return { statusCode: 403, body: error }
   }
 }
 
