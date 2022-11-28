@@ -23,11 +23,11 @@ export default class SignUpController implements Controller {
 
       const { name, email, password } = httpRequest.body
 
-      const account = await this.addAccount.add({ name, email, password })
+      await this.addAccount.add({ name, email, password })
 
-      await this.authenticateUser.auth({ email, password })
+      const authToken = await this.authenticateUser.auth({ email, password })
 
-      return HttpHelper.created(account)
+      return HttpHelper.created({ access_token: authToken })
     } catch (error: any) {
       return HttpHelper.serverError(error)
     }
