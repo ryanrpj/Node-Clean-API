@@ -15,8 +15,8 @@ services:
     links:
       - mongodb
     volumes:
-      - ./dist:/usr/app/dist
+      - ./dist/:/usr/app/dist/
       - ./package.json:/usr/app/package.json
-    command: bash -c "npm install --omit=dev && npm start"
+    command: bash -c "npm install --omit=dev && npm run dev"
     ports:
       - "8080:8080"
