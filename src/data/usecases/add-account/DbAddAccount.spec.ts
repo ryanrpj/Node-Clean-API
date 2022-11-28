@@ -26,14 +26,7 @@ class AddAccountRepositoryStub implements AddAccountRepository {
 
 const makeGetAccountByEmailRepositoryStub = (): GetAccountByEmailRepository => {
   class GetAccountByEmailRepositoryStub implements GetAccountByEmailRepository {
-    async getByEmail (_: string): Promise<AccountModel> {
-      return {
-        id: 'any_id',
-        name: 'any_name',
-        email: 'any_email',
-        password: 'hashed_password'
-      }
-    }
+    public getByEmail = async (_: string): Promise<AccountModel | null> => null
   }
 
   return new GetAccountByEmailRepositoryStub()
@@ -83,6 +76,16 @@ describe('DbAddAccount Usecase', () => {
 
     await sut.add(makeFakeAccount())
     expect(getSpy).toHaveBeenCalledWith('valid_email')
+  })
+
+  test('Should return null GetAccountByEmailRepository returns an account', async () => {
+    const { sut, getAccountByEmailRepository } = makeSut()
+
+    jest.spyOn(getAccountByEmailRepository, 'getByEmail').mockReturnValueOnce(Promise.resolve({} as any))
+
+    const createdAccount = await sut.add(makeFakeAccount())
+
+    expect(createdAccount).toBeNull()
   })
 
   test('Should throw if GetAccountByEmailRepository throws', async () => {
