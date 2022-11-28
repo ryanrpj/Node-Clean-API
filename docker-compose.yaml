@@ -10,12 +10,13 @@ services:
     volumes:
       - ./data:/data/db
   api:
-    build: .
-    image: "typescript-clean-api"
+    working_dir: /usr/app
+    image: "node:18.12.1"
     links:
       - mongodb
     volumes:
       - ./dist:/usr/app/dist
-    command: npm start
+      - ./package.json:/usr/app/package.json
+    command: bash -c "npm install --omit=dev && npm start"
     ports:
       - "8080:8080"
