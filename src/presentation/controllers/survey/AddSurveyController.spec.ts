@@ -69,4 +69,13 @@ describe('AddSurvey Controller', () => {
 
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
+
+  test('Should return 201 if AddSurvey succeeds', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeHttpRequest()
+    const response = await sut.handle(httpRequest)
+
+    expect(response).toEqual(HttpHelper.created(httpRequest.body))
+  })
 })
