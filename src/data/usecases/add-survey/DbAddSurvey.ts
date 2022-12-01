@@ -8,7 +8,6 @@ export default class DbAddSurvey implements AddSurvey {
   ) {}
 
   async add (survey: AddSurveyModel): Promise<Survey> {
-    await this.addSurveyRepository.add(survey)
-    return undefined as any
+    return await this.addSurveyRepository.add(survey)
   }
 }
