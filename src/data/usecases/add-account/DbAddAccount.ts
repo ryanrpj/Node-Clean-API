@@ -1,7 +1,7 @@
 import AddAccountRepository from '../../protocols/db/AddAccountRepository'
 import Hasher from '../../protocols/criptography/Hasher'
 import { AddAccount, AddAccountModel } from '../../../domain/usecases/authentication/AddAccount'
-import AccountModel from '../../../domain/models/Account'
+import AccountModel from '../../../domain/models/authentication/Account'
 import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
 
 export default class DbAddAccount implements AddAccount {

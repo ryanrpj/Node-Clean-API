@@ -1,5 +1,5 @@
 import DbAddAccount from './DbAddAccount'
-import AccountModel from '../../../domain/models/Account'
+import AccountModel from '../../../domain/models/authentication/Account'
 import { AddAccountModel } from '../../../domain/usecases/authentication/AddAccount'
 import AddAccountRepository from '../../protocols/db/AddAccountRepository'
 import Hasher from '../../protocols/criptography/Hasher'

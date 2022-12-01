@@ -1,6 +1,6 @@
 import AuthenticateUser from '../../../domain/usecases/authentication/AuthenticateUser'
 import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
-import AccountModel from '../../../domain/models/Account'
+import AccountModel from '../../../domain/models/authentication/Account'
 import DbAuthenticateUser from './DbAuthenticateUser'
 import HashComparer from '../../protocols/criptography/HashComparer'
 import AuthenticateCredentials from '../../../domain/usecases/authentication/AuthenticateCredentials'

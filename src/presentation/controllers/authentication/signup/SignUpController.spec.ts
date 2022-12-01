@@ -1,7 +1,7 @@
 import SignUpController from './SignUpController'
 import ServerError from '../../../errors/ServerError'
 import { AddAccount, AddAccountModel } from '../../../../domain/usecases/authentication/AddAccount'
-import AccountModel from '../../../../domain/models/Account'
+import AccountModel from '../../../../domain/models/authentication/Account'
 import Validation from '../../../protocols/Validation'
 import HttpRequest from '../../../protocols/HttpRequest'
 import AuthenticateUser from '../../../../domain/usecases/authentication/AuthenticateUser'
