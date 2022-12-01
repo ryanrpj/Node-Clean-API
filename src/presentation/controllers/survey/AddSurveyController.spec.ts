@@ -1,6 +1,7 @@
 import HttpRequest from '../../protocols/HttpRequest'
 import Validation from '../../protocols/Validation'
 import AddSurveyController from './AddSurveyController'
+import HttpHelper from '../../helpers/http/HttpHelper'
 
 class ValidationStub implements Validation {
   validate (input: any): Error | null {
@@ -39,5 +40,14 @@ describe('AddSurvey Controller', () => {
     await sut.handle(httpRequest)
 
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 400 if Validation returns an error', async () => {
+    const { sut, validation } = makeSut()
+    jest.spyOn(validation, 'validate').mockReturnValueOnce(new Error('Invalid answer'))
+    const httpRequest = makeHttpRequest()
+    const response = await sut.handle(httpRequest)
+
+    expect(response).toEqual(HttpHelper.badRequest(new Error('Invalid answer')))
   })
 })
