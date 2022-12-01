@@ -5,7 +5,7 @@ import Survey from '../../../domain/models/survey/Survey'
 
 class AddSurveyRepositoryStub implements AddSurveyRepository {
   async add (survey: AddSurveyModel): Promise<Survey> {
-    return { id: 'any_id', ...survey }
+    return { id: 'valid_id', ...survey }
   }
 }
 
@@ -34,5 +34,13 @@ describe('DbAddSurvey', () => {
 
     await sut.add(survey)
     expect(addSpy).toHaveBeenCalledWith(survey)
+  })
+
+  test('Should return a survey if AddSurveyRepository succeeds', async () => {
+    const { sut } = makeSut()
+    const survey = makeAddSurvey()
+
+    const createdSurvey = await sut.add(survey)
+    expect(createdSurvey).toEqual({ id: 'valid_id', ...survey })
   })
 })
