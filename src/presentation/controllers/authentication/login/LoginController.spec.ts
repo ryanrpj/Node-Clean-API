@@ -1,11 +1,11 @@
-import Controller from '../../protocols/Controller'
+import Controller from '../../../protocols/Controller'
 import LoginController from './LoginController'
-import HttpHelper from '../../helpers/http/HttpHelper'
-import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
-import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
-import HttpRequest from '../../protocols/HttpRequest'
-import ServerError from '../../errors/ServerError'
-import Validation from '../../protocols/Validation'
+import HttpHelper from '../../../helpers/http/HttpHelper'
+import AuthenticateUser from '../../../../domain/usecases/AuthenticateUser'
+import AuthenticateCredentials from '../../../../domain/usecases/AuthenticateCredentials'
+import HttpRequest from '../../../protocols/HttpRequest'
+import ServerError from '../../../errors/ServerError'
+import Validation from '../../../protocols/Validation'
 
 interface SutTypes {
   sut: Controller

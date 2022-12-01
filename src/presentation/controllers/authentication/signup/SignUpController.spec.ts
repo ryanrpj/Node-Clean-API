@@ -1,13 +1,13 @@
 import SignUpController from './SignUpController'
-import ServerError from '../../errors/ServerError'
-import { AddAccount, AddAccountModel } from '../../../domain/usecases/AddAccount'
-import AccountModel from '../../../domain/models/Account'
-import Validation from '../../protocols/Validation'
-import HttpRequest from '../../protocols/HttpRequest'
-import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
-import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
-import HttpHelper from '../../helpers/http/HttpHelper'
-import EmailAlreadyInUseError from '../../errors/EmailAlreadyInUseError'
+import ServerError from '../../../errors/ServerError'
+import { AddAccount, AddAccountModel } from '../../../../domain/usecases/AddAccount'
+import AccountModel from '../../../../domain/models/Account'
+import Validation from '../../../protocols/Validation'
+import HttpRequest from '../../../protocols/HttpRequest'
+import AuthenticateUser from '../../../../domain/usecases/AuthenticateUser'
+import AuthenticateCredentials from '../../../../domain/usecases/AuthenticateCredentials'
+import HttpHelper from '../../../helpers/http/HttpHelper'
+import EmailAlreadyInUseError from '../../../errors/EmailAlreadyInUseError'
 
 interface SutTypes {
   sut: SignUpController
