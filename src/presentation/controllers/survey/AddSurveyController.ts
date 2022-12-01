@@ -3,7 +3,7 @@ import HttpRequest from '../../protocols/HttpRequest'
 import HttpResponse from '../../protocols/HttpResponse'
 import Validation from '../../protocols/Validation'
 import HttpHelper from '../../helpers/http/HttpHelper'
-import AddSurvey from '../../../domain/usecases/survey/AddSurvey'
+import { AddSurvey } from '../../../domain/usecases/survey/AddSurvey'
 
 export default class AddSurveyController implements Controller {
   constructor (
@@ -21,9 +21,9 @@ export default class AddSurveyController implements Controller {
 
       const { question, answers } = request.body
 
-      await this.addSurvey.add({ question, answers })
+      const createdSurvey = await this.addSurvey.add({ question, answers })
 
-      return HttpHelper.created({ question, answers })
+      return HttpHelper.created(createdSurvey)
     } catch (error: any) {
       return HttpHelper.serverError(error)
     }

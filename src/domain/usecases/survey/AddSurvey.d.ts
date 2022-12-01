@@ -1,5 +1,15 @@
 import Survey from '../../models/survey/Survey'
 
-export default interface AddSurvey {
-  add: (survey: Survey) => Promise<void>
+export interface AddSurvey {
+  add: (survey: AddSurveyModel) => Promise<Survey>
+}
+
+export interface AddSurveyModel {
+  question: string
+  answers: AddSurveyAnswer[]
+}
+
+interface AddSurveyAnswer {
+  image?: string
+  answer: string
 }
