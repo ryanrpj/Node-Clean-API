@@ -1,10 +1,10 @@
-import { AddAccount } from '../../../../domain/usecases/AddAccount'
+import { AddAccount } from '../../../../domain/usecases/authentication/AddAccount'
 import Controller from '../../../protocols/Controller'
 import HttpHelper from '../../../helpers/http/HttpHelper'
 import HttpResponse from '../../../protocols/HttpResponse'
 import HttpRequest from '../../../protocols/HttpRequest'
 import Validation from '../../../protocols/Validation'
-import AuthenticateUser from '../../../../domain/usecases/AuthenticateUser'
+import AuthenticateUser from '../../../../domain/usecases/authentication/AuthenticateUser'
 import EmailAlreadyInUseError from '../../../errors/EmailAlreadyInUseError'
 
 export default class SignUpController implements Controller {

@@ -1,9 +1,9 @@
-import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
+import AuthenticateUser from '../../../domain/usecases/authentication/AuthenticateUser'
 import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
 import AccountModel from '../../../domain/models/Account'
 import DbAuthenticateUser from './DbAuthenticateUser'
 import HashComparer from '../../protocols/criptography/HashComparer'
-import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
+import AuthenticateCredentials from '../../../domain/usecases/authentication/AuthenticateCredentials'
 import Encrypter from '../../protocols/criptography/Encrypter'
 
 interface SutTypes {

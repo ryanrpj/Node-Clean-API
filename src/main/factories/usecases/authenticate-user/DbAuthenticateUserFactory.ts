@@ -2,7 +2,7 @@ import BcryptAdapter from '../../../../infra/criptography/BcryptAdapter'
 import AccountMongoRepository from '../../../../infra/db/mongodb/account-repository/AccountMongoRepository'
 import DbAuthenticateUser from '../../../../data/usecases/authenticate-user/DbAuthenticateUser'
 import JwtAdapter from '../../../../infra/criptography/JwtAdapter'
-import AuthenticateUser from '../../../../domain/usecases/AuthenticateUser'
+import AuthenticateUser from '../../../../domain/usecases/authentication/AuthenticateUser'
 
 const DbAuthenticateUserFactory = {
   makeDbAuthenticateUser (): AuthenticateUser {
