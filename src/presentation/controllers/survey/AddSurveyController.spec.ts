@@ -2,7 +2,7 @@ import HttpRequest from '../../protocols/HttpRequest'
 import Validation from '../../protocols/Validation'
 import AddSurveyController from './AddSurveyController'
 import HttpHelper from '../../helpers/http/HttpHelper'
-import AddSurvey from '../../../domain/usecases/survey/AddSurvey'
+import { AddSurvey, AddSurveyModel } from '../../../domain/usecases/survey/AddSurvey'
 import Survey from '../../../domain/models/survey/Survey'
 
 class ValidationStub implements Validation {
@@ -12,8 +12,8 @@ class ValidationStub implements Validation {
 }
 
 class AddSurveyStub implements AddSurvey {
-  async add (survey: Survey): Promise<void> {
-    return await Promise.resolve(undefined)
+  async add (survey: AddSurveyModel): Promise<Survey> {
+    return await Promise.resolve({ id: 'any_id', ...survey })
   }
 }
 
@@ -76,7 +76,11 @@ describe('AddSurvey Controller', () => {
     const httpRequest = makeHttpRequest()
     const response = await sut.handle(httpRequest)
 
-    expect(response).toEqual(HttpHelper.created(httpRequest.body))
+    const { question, answers } = httpRequest.body
+
+    const createdSurvey = { id: 'any_id', question, answers }
+
+    expect(response).toEqual(HttpHelper.created(createdSurvey))
   })
 
   test('Should return 500 if AddSurvey throws', async () => {
