@@ -22,6 +22,6 @@ export default class AddSurveyController implements Controller {
 
     await this.addSurvey.add({ question, answers })
 
-    return null as any
+    return HttpHelper.created({ question, answers })
   }
 }
