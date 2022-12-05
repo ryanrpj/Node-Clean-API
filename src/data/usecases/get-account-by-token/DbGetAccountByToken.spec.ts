@@ -37,15 +37,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbGetAccountByToken', () => {
-  test('Should call GetAccountByTokenRepository with correct values', async () => {
-    const { sut, getAccountByTokenRepository } = makeSut()
-    const getByTokenSpy = jest.spyOn(getAccountByTokenRepository, 'getByToken')
-
-    await sut.getByToken('any_token', 'any_role')
-
-    expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
-  })
-
   test('Should call Encrypter with correct value', async () => {
     const { sut, decrypter } = makeSut()
     const decryptSpt = jest.spyOn(decrypter, 'decrypt')
@@ -53,6 +44,24 @@ describe('DbGetAccountByToken', () => {
     await sut.getByToken('any_token', 'any_role')
 
     expect(decryptSpt).toHaveBeenCalledWith('any_token')
+  })
+
+  test('Should return null if Encrypter returns null', async () => {
+    const { sut, decrypter } = makeSut()
+    jest.spyOn(decrypter, 'decrypt').mockImplementationOnce(async () => null)
+
+    const account = await sut.getByToken('any_token', 'any_role')
+
+    expect(account).toBeNull()
+  })
+
+  test('Should call GetAccountByTokenRepository with correct values', async () => {
+    const { sut, getAccountByTokenRepository } = makeSut()
+    const getByTokenSpy = jest.spyOn(getAccountByTokenRepository, 'getByToken')
+
+    await sut.getByToken('any_token', 'any_role')
+
+    expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
   })
 
   test('Should return null if GetAccountByTokenRepository returns null', async () => {
