@@ -15,11 +15,17 @@ export default class AuthenticationMiddleware implements Middleware {
     try {
       const authToken = request?.headers?.['x-access-token']
 
-      if (authToken) {
-        await this.getAccountByToken.getByToken(authToken, this.role)
+      if (!authToken) {
+        return HttpHelper.forbidden(new ForbiddenError())
       }
 
-      return HttpHelper.forbidden(new ForbiddenError())
+      const account = await this.getAccountByToken.getByToken(authToken, this.role)
+
+      if (!account) {
+        return HttpHelper.forbidden(new ForbiddenError())
+      }
+
+      return HttpHelper.ok(account)
     } catch (error: any) {
       return HttpHelper.serverError(error)
     }
