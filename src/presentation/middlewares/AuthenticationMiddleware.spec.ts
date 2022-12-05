@@ -54,6 +54,15 @@ describe('Authentication Middleware', () => {
     expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
   })
 
+  test('Should return 200 if GetAccountByToken returns an account', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeHttpRequest()
+
+    const response = await sut.handle(httpRequest)
+
+    expect(response).toEqual(HttpHelper.ok(makeFakeAccount()))
+  })
+
   test('Should return 403 if GetAccountByToken returns null', async () => {
     const { sut, getAccountByToken } = makeSut()
     jest.spyOn(getAccountByToken, 'getByToken').mockImplementationOnce(async () => null)
