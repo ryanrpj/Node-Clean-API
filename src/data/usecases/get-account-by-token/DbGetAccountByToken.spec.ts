@@ -53,4 +53,15 @@ describe('DbGetAccountByToken', () => {
 
     expect(account).toEqual(makeFakeAccount())
   })
+
+  test('Should throw if GetAccountByTokenRepository throws', async () => {
+    const { sut, getAccountByTokenRepository } = makeSut()
+    jest.spyOn(getAccountByTokenRepository, 'getByToken').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+
+    const promise = sut.getByToken('any_token', 'any_role')
+
+    await expect(promise).rejects.toThrow()
+  })
 })
