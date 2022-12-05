@@ -36,4 +36,13 @@ describe('DbGetAccountByToken', () => {
 
     expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
   })
+
+  test('Should return null if GetAccountByTokenRepository returns null', async () => {
+    const { sut, getAccountByTokenRepository } = makeSut()
+    jest.spyOn(getAccountByTokenRepository, 'getByToken').mockImplementationOnce(async () => null)
+
+    const account = await sut.getByToken('any_token', 'any_role')
+
+    expect(account).toBeNull()
+  })
 })
