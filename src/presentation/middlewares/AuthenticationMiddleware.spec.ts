@@ -63,4 +63,16 @@ describe('Authentication Middleware', () => {
 
     expect(response).toEqual(HttpHelper.forbidden(new ForbiddenError()))
   })
+
+  test('Should return 500 if GetAccountByToken throws', async () => {
+    const { sut, getAccountByToken } = makeSut()
+    jest.spyOn(getAccountByToken, 'getByToken').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+    const httpRequest = makeHttpRequest()
+
+    const response = await sut.handle(httpRequest)
+
+    expect(response).toEqual(HttpHelper.serverError(new Error()))
+  })
 })
