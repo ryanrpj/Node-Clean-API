@@ -55,6 +55,17 @@ describe('DbGetAccountByToken', () => {
     expect(account).toBeNull()
   })
 
+  test('Should throw if Decrypter throws', async () => {
+    const { sut, decrypter } = makeSut()
+    jest.spyOn(decrypter, 'decrypt').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+
+    const promise = sut.getByToken('any_token', 'any_role')
+
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call GetAccountByTokenRepository with correct values', async () => {
     const { sut, getAccountByTokenRepository } = makeSut()
     const getByTokenSpy = jest.spyOn(getAccountByTokenRepository, 'getByToken')
