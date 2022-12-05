@@ -10,7 +10,11 @@ export default class DbGetAccountByToken implements GetAccountByToken {
   ) {}
 
   async getByToken (token: string, role: string | undefined): Promise<AccountModel | null> {
-    await this.decrypter.decrypt(token)
+    const decryptedToken = await this.decrypter.decrypt(token)
+
+    if (!decryptedToken) {
+      return null
+    }
 
     const account = await this.getAccountByTokenRepository.getByToken(token, role)
 
