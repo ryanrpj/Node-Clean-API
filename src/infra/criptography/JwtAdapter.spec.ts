@@ -49,7 +49,7 @@ describe('JwtAdapter', () => {
     await expect(encryptPromise).rejects.toThrow(new Error('failed_to_sign'))
   })
 
-  test('Should call verify with correct values', async () => {
+  test('Should call jwt verify with correct values', async () => {
     const { sut } = makeSut()
 
     const verifySpy = jest.spyOn(jwt, 'verify')
@@ -58,10 +58,21 @@ describe('JwtAdapter', () => {
     expect(verifySpy).toHaveBeenCalledWith('any_token', 'dummy_secret', expect.anything(), expect.anything())
   })
 
-  test('Should return decrypted data on verify success', async () => {
+  test('Should return decrypted data on jwt verify success', async () => {
     const { sut } = makeSut()
 
     const decryptedData = await sut.decrypt('any_token')
     expect(decryptedData).toEqual('decrypted_token')
+  })
+
+  test('Should throw if jwt verify throws', async () => {
+    const { sut } = makeSut()
+
+    jest.spyOn(jwt, 'verify').mockImplementationOnce((data: any, secret: any, options: any, callback: any) => {
+      callback(new Error('failed_to_decrypt'))
+    })
+
+    const encryptPromise = sut.decrypt('any_token')
+    await expect(encryptPromise).rejects.toThrow(new Error('failed_to_decrypt'))
   })
 })
