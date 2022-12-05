@@ -12,12 +12,16 @@ export default class AuthenticationMiddleware implements Middleware {
   ) {}
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
-    const authToken = request?.headers?.['x-access-token']
+    try {
+      const authToken = request?.headers?.['x-access-token']
 
-    if (authToken) {
-      await this.getAccountByToken.getByToken(authToken, this.role)
+      if (authToken) {
+        await this.getAccountByToken.getByToken(authToken, this.role)
+      }
+
+      return HttpHelper.forbidden(new ForbiddenError())
+    } catch (error: any) {
+      return HttpHelper.serverError(error)
     }
-
-    return HttpHelper.forbidden(new ForbiddenError())
   }
 }
