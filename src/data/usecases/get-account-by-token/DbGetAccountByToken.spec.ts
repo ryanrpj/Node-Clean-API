@@ -1,6 +1,7 @@
 import DbGetAccountByToken from './DbGetAccountByToken'
 import GetAccountByTokenRepository from '../../protocols/db/GetAccountByTokenRepository'
 import AccountModel from '../../../domain/models/authentication/Account'
+import Decrypter from '../../protocols/criptography/Decrypter'
 
 const makeFakeAccount = (): AccountModel => ({
   name: 'valid_name',
@@ -15,16 +16,24 @@ class GetAccountByTokenRepositoryStub implements GetAccountByTokenRepository {
   }
 }
 
+class DecrypterStub implements Decrypter {
+  async decrypt (data: string): Promise<string | null> {
+    return 'decrypted_token'
+  }
+}
+
 interface SutTypes {
   sut: DbGetAccountByToken
   getAccountByTokenRepository: GetAccountByTokenRepository
+  decrypter: Decrypter
 }
 
 const makeSut = (): SutTypes => {
   const getAccountByTokenRepository = new GetAccountByTokenRepositoryStub()
-  const sut = new DbGetAccountByToken(getAccountByTokenRepository)
+  const decrypter = new DecrypterStub()
+  const sut = new DbGetAccountByToken(decrypter, getAccountByTokenRepository)
 
-  return { sut, getAccountByTokenRepository }
+  return { sut, decrypter, getAccountByTokenRepository }
 }
 
 describe('DbGetAccountByToken', () => {
@@ -35,6 +44,15 @@ describe('DbGetAccountByToken', () => {
     await sut.getByToken('any_token', 'any_role')
 
     expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
+  })
+
+  test('Should call Encrypter with correct value', async () => {
+    const { sut, decrypter } = makeSut()
+    const decryptSpt = jest.spyOn(decrypter, 'decrypt')
+
+    await sut.getByToken('any_token', 'any_role')
+
+    expect(decryptSpt).toHaveBeenCalledWith('any_token')
   })
 
   test('Should return null if GetAccountByTokenRepository returns null', async () => {
