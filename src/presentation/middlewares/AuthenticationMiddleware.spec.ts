@@ -37,9 +37,8 @@ const makeHttpRequest = (): HttpRequest => ({
 describe('Authentication Middleware', () => {
   test('Should return 403 if x-access-token is absent from request header', async () => {
     const { sut } = makeSut()
-    const httpRequest = {}
 
-    const response = await sut.handle(httpRequest)
+    const response = await sut.handle({ })
 
     expect(response).toEqual(HttpHelper.forbidden(new ForbiddenError()))
   })
@@ -53,5 +52,15 @@ describe('Authentication Middleware', () => {
     await sut.handle(httpRequest)
 
     expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
+  })
+
+  test('Should return 403 if GetAccountByToken returns null', async () => {
+    const { sut, getAccountByToken } = makeSut()
+    jest.spyOn(getAccountByToken, 'getByToken').mockImplementationOnce(async () => null)
+    const httpRequest = makeHttpRequest()
+
+    const response = await sut.handle(httpRequest)
+
+    expect(response).toEqual(HttpHelper.forbidden(new ForbiddenError()))
   })
 })
