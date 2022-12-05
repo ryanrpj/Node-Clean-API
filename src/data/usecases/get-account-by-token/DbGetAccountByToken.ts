@@ -8,7 +8,12 @@ export default class DbGetAccountByToken implements GetAccountByToken {
   ) {}
 
   async getByToken (token: string, role: string | undefined): Promise<AccountModel | null> {
-    await this.getAccountByTokenRepository.getByToken(token, role)
-    return null
+    const account = await this.getAccountByTokenRepository.getByToken(token, role)
+
+    if (!account) {
+      return null
+    }
+
+    return account
   }
 }
