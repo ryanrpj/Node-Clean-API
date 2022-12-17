@@ -12,7 +12,7 @@ export default class JwtAdapter implements Encrypter, Decrypter {
           return reject(error)
         }
 
-        return resolve(token!)
+        return resolve(token)
       })
     })
   }

@@ -1,5 +1,5 @@
 import DbGetAccountByToken from './DbGetAccountByToken'
-import GetAccountByTokenRepository from '../../protocols/db/GetAccountByTokenRepository'
+import GetAccountByIdRepository from '../../protocols/db/GetAccountByIdRepository'
 import AccountModel from '../../../domain/models/authentication/Account'
 import Decrypter from '../../protocols/criptography/Decrypter'
 
@@ -10,34 +10,34 @@ const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id'
 })
 
-class GetAccountByTokenRepositoryStub implements GetAccountByTokenRepository {
-  async getByToken (token: string, role?: string): Promise<AccountModel | null> {
+class GetAccountByIdRepositoryStub implements GetAccountByIdRepository {
+  async getById (token: string, role?: string): Promise<AccountModel | null> {
     return makeFakeAccount()
   }
 }
 
 class DecrypterStub implements Decrypter {
   async decrypt (data: string): Promise<string | null> {
-    return 'decrypted_token'
+    return 'decrypted_id'
   }
 }
 
 interface SutTypes {
   sut: DbGetAccountByToken
-  getAccountByTokenRepository: GetAccountByTokenRepository
+  getAccountByIdRepository: GetAccountByIdRepository
   decrypter: Decrypter
 }
 
 const makeSut = (): SutTypes => {
-  const getAccountByTokenRepository = new GetAccountByTokenRepositoryStub()
+  const getAccountByIdRepository = new GetAccountByIdRepositoryStub()
   const decrypter = new DecrypterStub()
-  const sut = new DbGetAccountByToken(decrypter, getAccountByTokenRepository)
+  const sut = new DbGetAccountByToken(decrypter, getAccountByIdRepository)
 
-  return { sut, decrypter, getAccountByTokenRepository }
+  return { sut, decrypter, getAccountByIdRepository }
 }
 
 describe('DbGetAccountByToken', () => {
-  test('Should call Encrypter with correct value', async () => {
+  test('Should call Decrypter with correct value', async () => {
     const { sut, decrypter } = makeSut()
     const decryptSpt = jest.spyOn(decrypter, 'decrypt')
 
@@ -66,25 +66,25 @@ describe('DbGetAccountByToken', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call GetAccountByTokenRepository with correct values', async () => {
-    const { sut, getAccountByTokenRepository } = makeSut()
-    const getByTokenSpy = jest.spyOn(getAccountByTokenRepository, 'getByToken')
+  test('Should call GetAccountByIdRepository with correct values', async () => {
+    const { sut, getAccountByIdRepository } = makeSut()
+    const getByTokenSpy = jest.spyOn(getAccountByIdRepository, 'getById')
 
     await sut.getByToken('any_token', 'any_role')
 
-    expect(getByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role')
+    expect(getByTokenSpy).toHaveBeenCalledWith('decrypted_id', 'any_role')
   })
 
-  test('Should return null if GetAccountByTokenRepository returns null', async () => {
-    const { sut, getAccountByTokenRepository } = makeSut()
-    jest.spyOn(getAccountByTokenRepository, 'getByToken').mockImplementationOnce(async () => null)
+  test('Should return null if GetAccountByIdRepository returns null', async () => {
+    const { sut, getAccountByIdRepository } = makeSut()
+    jest.spyOn(getAccountByIdRepository, 'getById').mockImplementationOnce(async () => null)
 
     const account = await sut.getByToken('any_token', 'any_role')
 
     expect(account).toBeNull()
   })
 
-  test('Should return an account if GetAccountByTokenRepository returns an account', async () => {
+  test('Should return an account if GetAccountByIdRepository returns an account', async () => {
     const { sut } = makeSut()
 
     const account = await sut.getByToken('any_token', 'any_role')
@@ -92,9 +92,9 @@ describe('DbGetAccountByToken', () => {
     expect(account).toEqual(makeFakeAccount())
   })
 
-  test('Should throw if GetAccountByTokenRepository throws', async () => {
-    const { sut, getAccountByTokenRepository } = makeSut()
-    jest.spyOn(getAccountByTokenRepository, 'getByToken').mockImplementationOnce(async () => {
+  test('Should throw if GetAccountByIdRepository throws', async () => {
+    const { sut, getAccountByIdRepository } = makeSut()
+    jest.spyOn(getAccountByIdRepository, 'getById').mockImplementationOnce(async () => {
       throw new Error()
     })
 
