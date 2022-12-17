@@ -31,11 +31,11 @@ const makeSut = (role?: string): SutTypes => {
 }
 
 const makeHttpRequest = (): HttpRequest => ({
-  headers: { 'x-access-token': 'any_token' }
+  headers: { Authentication: 'any_token' }
 })
 
 describe('Authentication Middleware', () => {
-  test('Should return 403 if x-access-token is absent from request header', async () => {
+  test('Should return 403 if Authentication header is absent from request', async () => {
     const { sut } = makeSut()
 
     const response = await sut.handle({ })

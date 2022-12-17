@@ -13,7 +13,7 @@ export default class AuthenticationMiddleware implements Middleware {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const authToken = request?.headers?.['x-access-token']
+      const authToken = request?.headers?.Authentication
 
       if (!authToken) {
         return HttpHelper.forbidden(new ForbiddenError())
