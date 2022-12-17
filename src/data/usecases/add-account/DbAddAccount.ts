@@ -19,6 +19,9 @@ export default class DbAddAccount implements AddAccount {
     }
 
     const hashedPassword = await this.hasher.hash(account.password)
-    return await this.addAccountRepository.add(Object.assign({}, account, { password: hashedPassword }))
+    const createdAccount = await this.addAccountRepository.add(Object.assign({}, account, { password: hashedPassword }))
+
+    delete createdAccount.password
+    return createdAccount
   }
 }
