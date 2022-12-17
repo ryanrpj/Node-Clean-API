@@ -20,7 +20,7 @@ class HasherStub implements Hasher {
 
 class AddAccountRepositoryStub implements AddAccountRepository {
   async add (): Promise<AccountModel> {
-    return { id: 'valid_id', name: 'valid_name', email: 'valid_email' } as any
+    return { id: 'valid_id', name: 'valid_name', email: 'valid_email', password: 'hashed_password' } as any
   }
 }
 
