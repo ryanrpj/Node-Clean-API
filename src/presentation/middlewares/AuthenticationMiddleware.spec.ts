@@ -31,7 +31,7 @@ const makeSut = (role?: string): SutTypes => {
 }
 
 const makeHttpRequest = (): HttpRequest => ({
-  headers: { Authentication: 'any_token' }
+  headers: { Authentication: 'Bearer any_token' }
 })
 
 describe('Authentication Middleware', () => {
