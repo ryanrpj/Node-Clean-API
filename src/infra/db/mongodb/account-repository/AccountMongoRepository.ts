@@ -3,8 +3,9 @@ import { AddAccountModel } from '../../../../domain/usecases/authentication/AddA
 import AccountModel from '../../../../domain/models/authentication/Account'
 import MongoHelper from '../helpers/MongoHelper'
 import GetAccountByEmailRepository from '../../../../data/protocols/db/GetAccountByEmailRepository'
+import GetAccountByIdRepository from '../../../../data/protocols/db/GetAccountByIdRepository'
 
-export default class AccountMongoRepository implements AddAccountRepository, GetAccountByEmailRepository {
+export default class AccountMongoRepository implements AddAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository {
   async add (account: AddAccountModel): Promise<AccountModel> {
     const collection = MongoHelper.getCollection('accounts')
     const { insertedId } = await collection.insertOne(account)
@@ -16,6 +17,18 @@ export default class AccountMongoRepository implements AddAccountRepository, Get
   async getByEmail (email: string): Promise<AccountModel> {
     const collection = MongoHelper.getCollection('accounts')
     const accountFromDb: any = await collection.findOne({ email })
+
+    return accountFromDb && MongoHelper.map<AccountModel>(accountFromDb)
+  }
+
+  async getById (id: string, role?: string | undefined): Promise<AccountModel | null> {
+    const collection = MongoHelper.getCollection('accounts')
+    const accountFromDb: any = await collection.findOne({
+      _id: MongoHelper.buildObjectId(id),
+      $or: [
+        { role }, { role: 'admin' }
+      ]
+    })
 
     return accountFromDb && MongoHelper.map<AccountModel>(accountFromDb)
   }
