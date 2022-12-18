@@ -51,7 +51,7 @@ describe('Account Mongo Repository', () => {
     const sut = new AccountMongoRepository()
 
     const account = await sut.getByEmail('any_email')
-    expect(account).toBeFalsy()
+    expect(account).toBeNull()
   })
 
   test('Should return an account on getById success', async () => {
@@ -69,5 +69,12 @@ describe('Account Mongo Repository', () => {
     expect(account.name).toStrictEqual('any_name')
     expect(account.email).toStrictEqual('any_email')
     expect(account.password).toStrictEqual('hashed_password')
+  })
+
+  test('Should return null if getById does not find an account', async () => {
+    const sut = new AccountMongoRepository()
+
+    const account = await sut.getById('639f79f7d862b19fcfe1e64a')
+    expect(account).toBeNull()
   })
 })
