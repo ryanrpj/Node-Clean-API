@@ -41,7 +41,7 @@ describe('SignUp Routes', () => {
   test('Should return 403 on add survey with invalid Bearer token', async () => {
     await request(app)
       .post('/api/surveys')
-      .set('Authorization', 'any_token')
+      .set('Authentication', 'any_token')
       .send(makeSurvey())
       .expect(403)
   })
@@ -59,7 +59,7 @@ describe('SignUp Routes', () => {
 
     await request(app)
       .post('/api/surveys')
-      .set('Authorization', authToken)
+      .set('Authentication', authToken)
       .send(makeSurvey())
       .expect(403)
   })
