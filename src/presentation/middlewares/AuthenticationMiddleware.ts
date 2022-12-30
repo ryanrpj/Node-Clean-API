@@ -13,8 +13,8 @@ export default class AuthenticationMiddleware implements Middleware {
 
   async handle (request: HttpRequest): Promise<HttpResponse> {
     try {
-      const authToken = /Bearer (.*)/.exec(request?.headers?.Authentication)?.[1]
-
+      const headers = request?.headers
+      const authToken = /Bearer (.*)/.exec(headers?.Authentication || headers?.authentication)?.[1]
       if (!authToken) {
         return HttpHelper.forbidden(new ForbiddenError())
       }

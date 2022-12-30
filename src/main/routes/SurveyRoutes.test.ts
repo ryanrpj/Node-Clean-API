@@ -67,4 +67,23 @@ describe('SignUp Routes', () => {
       .send(makeSurvey())
       .expect(403)
   })
+
+  test('Should return 201 on add survey with valid Bearer token and admin privileges', async () => {
+    const userId = 'd5efaeeba6b83763fc624048'
+    await accountsCollection.insertOne({
+      _id: new ObjectId(userId),
+      name: 'valid_name',
+      email: 'valid_email',
+      password: 'hashed_password',
+      role: 'admin'
+    })
+
+    const authToken = sign(userId, env.jwtSecret)
+
+    await request(app)
+      .post('/api/surveys')
+      .set('Authentication', 'Bearer ' + authToken)
+      .send(makeSurvey())
+      .expect(201)
+  })
 })
