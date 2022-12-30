@@ -21,6 +21,7 @@ const makeSurvey = (): AddSurveyModel => ({
 
 describe('SignUp Routes', () => {
   let collection: Collection
+  let accountsCollection: Collection
 
   beforeAll(async () => await MongoHelper.connect(env.mongoUrl))
 
@@ -28,7 +29,10 @@ describe('SignUp Routes', () => {
 
   beforeEach(async () => {
     collection = MongoHelper.getCollection('surveys')
+    accountsCollection = MongoHelper.getCollection('accounts')
+
     await collection.deleteMany({})
+    await accountsCollection.deleteMany({})
   })
 
   test('Should return 403 on add survey without Bearer token', async () => {
@@ -48,7 +52,7 @@ describe('SignUp Routes', () => {
 
   test('Should return 403 on add survey with valid Bearer token without admin privileges', async () => {
     const userId = 'd5efaeeba6b83763fc624048'
-    await collection.insertOne({
+    await accountsCollection.insertOne({
       _id: new ObjectId(userId),
       name: 'valid_name',
       email: 'valid_email',
