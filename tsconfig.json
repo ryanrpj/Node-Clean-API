@@ -4,7 +4,9 @@
     "module": "CommonJS",
     "target": "ES2019",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "strictNullChecks": false,
+    "rootDir": "src"
   },
   "include": [
     "src"

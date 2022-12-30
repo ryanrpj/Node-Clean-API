@@ -1,5 +1,5 @@
-import AuthenticateUser from '../../../domain/usecases/AuthenticateUser'
-import AuthenticateCredentials from '../../../domain/usecases/AuthenticateCredentials'
+import AuthenticateUser from '../../../domain/usecases/authentication/AuthenticateUser'
+import AuthenticateCredentials from '../../../domain/usecases/authentication/AuthenticateCredentials'
 import GetAccountByEmailRepository from '../../protocols/db/GetAccountByEmailRepository'
 import HashComparer from '../../protocols/criptography/HashComparer'
 import Encrypter from '../../protocols/criptography/Encrypter'
